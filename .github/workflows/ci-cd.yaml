@@ -1,28 +1,49 @@
-name: CI/CD Pipeline
+# name: CI/CD Pipeline
 
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout Code
+#       uses: actions/checkout@v2
+
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v2
+#       with:
+#         node-version: 18
+
+#     - name: Install Dependencies
+#       run: npm install
+
+#     - name: Build
+#       run: npm run build
+
+#     - name: Run Unit Tests
+#       run: npm test
+name: ci
+
+# run the workflow for different events
+# on every commit
+# and every morning
+# and when we trigger the workflow manually
+# and when we dispatch an event
 on:
   push:
-    branches:
-      - main
-
+  workflow_dispatch:
+  schedule:
+    # UTC time
+    - cron: '0 7 * * *'
+  repository_dispatch:
+    types: [on-greeting]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  greet:
+    runs-on: ubuntu-20.04
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 18
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Build
-      run: npm run build
-
-    - name: Run Unit Tests
-      run: npm test
+      - name: Greeting
+        run: echo "Hello to you 1 times"
